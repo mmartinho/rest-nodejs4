@@ -1,0 +1,11 @@
+******************************************************** 
+AVA: cursos.alura.com.br
+Formação: Node.js com Express
+Curso: NodeJS: Crie uma API REST padronizada e escalável
+Data Início: 23/02/2021
+********************************************************
+ 
+Capítulo 01: Começando uma API REST
+#npmInit, #package.json, #gitHub
+
+1. 
