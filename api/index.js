@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
-const roteador = require('./rotas/fonecedores');
+const roteadorFornecedor = require('./rotas/fonecedores');
 const NaoEncontrado = require('./erros/NaoEncontrado');
 const CampoInvalido = require('./erros/CampoInvalido');
 const ValorNaoSuportado = require('./erros/ValorNaoSuportado');
@@ -46,7 +46,7 @@ app.use((requisicao, resposta, proximo) => {
 /**
  * Middleware: Conjunto de todas as rotas de Fornecedores
  */
-app.use('/api/fornecedores', roteador);
+app.use('/api/fornecedores', roteadorFornecedor);
 
 /**
  * Middleware: Conjunto de todos os erros da API

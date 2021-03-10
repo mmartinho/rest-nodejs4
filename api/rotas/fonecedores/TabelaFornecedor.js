@@ -19,7 +19,7 @@ module.exports = {
      * @returns Fornecedor 
      */
     inserir(fornecedor) {
-        return ModeloTabelaFornecedor.create(fornecedor);;
+        return ModeloTabelaFornecedor.create(fornecedor);
     },
     /**
      * Retorna um fornecedor a partir de seu id

@@ -2,6 +2,7 @@ const roteador = require('express').Router();
 const TabelaFornecedor = require('./TabelaFornecedor');
 const Fornecedor = require('./Fornecedor');
 const { SerializadorFornecedor } = require('../../Serializador');
+const roteadorProdutos = require('./produtos');
 
 /**
  * Rota que responde com a lista de fornecedores
@@ -100,5 +101,12 @@ roteador.delete('/:id', async (requisicao, resposta, proxima) => {
         proxima(erro);
     }
 });
+
+/**
+ * Middleware: Conjunto de todas as rotas de Produtos 
+ * relacionados a um fornecedor em particular
+ * @subroute
+ */
+roteador.use('/:idFornecedor/produtos', roteadorProdutos);
 
 module.exports = roteador;

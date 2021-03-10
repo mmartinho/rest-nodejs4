@@ -1,12 +1,26 @@
-const ModeloTabelaFornecedor = require('../rotas/fonecedores/ModeloTabelaFornecedor');
+/**
+ * Lista de todos os modelos de tabelas
+ */
+const modelos = [
+    require('../rotas/fonecedores/ModeloTabelaFornecedor'),
+    require('../rotas/fonecedores/produtos/ModeloTabelaProduto')
+];
 
 /**
- * Realiza da promessa da definição da tabela
+ * Sincroniza a criação das tabelas
  */
-ModeloTabelaFornecedor.sync()
-    .then( () => { 
-        console.log('Tabela fornecedor criada com sucesso');
-    })
-    .catch( (motivo) => { 
-        console.log(motivo); 
-    });
+async function criarTabelas() {
+    for(let i = 0; i < modelos.length; i++) {
+        const modelo = modelos[i];
+        await modelo.sync()    
+            .then( () => { 
+                console.log('Tabela criada com sucesso');
+            })
+            .catch( (motivo) => { 
+                console.log(motivo); 
+            });
+    }
+}
+
+criarTabelas();
+

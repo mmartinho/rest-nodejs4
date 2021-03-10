@@ -1,146 +1,26 @@
-******************************************************** 
+********************************************************************* 
 AVA: cursos.alura.com.br
 Formação: Node.js com Express
-Curso: NodeJS: Crie uma API REST padronizada e escalável
-Data Início: 23/02/2021
-********************************************************
+Curso: NodeJS: NodeJS: Avançando em APIs REST com controle de versões
+Data Início: 08/03/2021
+*********************************************************************
  
-Capítulo 01: Começando uma API REST
-#npmInit, #package.json, #gitHub, #sequelize, #mysql, #sequelizeDefine, #sequelizeDefineSync, 
-#sequelizeFindAll
+Capítulo 01: Produtos na Pet Shop
+#sequelize, #sequelizeTableReferences, #sequelizeFindAll, #routerHierarchy #routerMergeParams
 
-1. Inicializamos o node:
-        >npm init
-2. Adicionamos um .gitignore para NodeJS, e inicializamos o git repo local:
-        >git init
-        >git add .
-        >git commit -am "first commit"
-3. Criamos um repo remoto no github.com:
-        @see https://github.com/mmartinho/rest-nodejs3
-   ...adicionando o "github remoto" ao repo local:
-        >git remote add github.com git@github.com:mmartinho/rest-node3.git
-4. Instalamos as dependências express, body-parser, mysql2 e sequelize:
-        >npm install express body-parser mysql2 sequelize
-5. Criamos o ponto de entrada da app:
-        @see api\index.js
-6. Criamos a config do SGBD:
-        @see api\banco-de-dados\index.js
-7. Instalamos o pacote "config" que permite "centralizar" as configs da aplicação:
-        >npm install config
-8. Criamos a config centralizada em:
-        @see config\default.json
-   ...atualizando o arquivo de config do SGBD e do servidor de aplicação:
-        @see api\banco-de-dados\index.js
-        @see api\index.js
-9. Instalamos o nodemon em ambiente de desenvolvimento:
-        >npm install nodemon --save-dev
-   ...alterando o script de inicilização do servidor de aplicação:
-        @see package.json
-10. Criamos o conjunto de rotas "fornecedores" em: 
+1. Copiamos o código do projeto "rest-nodejs3", renomeando-o para rest-node4. Iremos utilizar
+   o mesmo BD que está no MySQL Server;
+2. Criamos a "sub rota" de produtos de fornecedor em:
+        @see api\rotas\fonecedores\produtos\index.js
+3. Declaramos esta nova sub-rota dentro da rota do fonecedor em:
         @see api\rotas\fonecedores\index.js
-    ...declarando o conjunto de rotas de fornecedores em:
-        @see api\index.js
-11. Criamos a modelo da tabela de fornecedores em:
-        @see api\rotas\fonecedores\ModeloTabelaFornecedor.js
-12. Criamos um script para gerar a tabela no banco de dados:
+4. Criamos o modelo da tabela em:
+        @see api\rotas\fonecedores\produtos\ModeloTabelaProduto.js
+5. Modificamos o script de criacao das tabelas do bd:
         @see api\banco-de-dados\criarTabelas.js
-    ...executando-o no node:
+   ...executamos a criação com o comando:
         >node .\api\banco-de-dados\criarTabelas.js
-13. Criamos uma camada para "apelidar" os métodos do Sequelize:
-        @see api\rotas\fonecedores\TabelaFornecedor.js
-    ...utilizando-a dentro da rota  
-
-Capítulo 02: Aprimorando a API
-#sequelizeCreate, #sequelizeFindOne, #sequelizeUpdate
-
-1. Criamos a classe:
-        @see api\rotas\fonecedores\Fornecedor.js
-   ...para se responsabilizar pelo CRUD OM;
-2. Adicionamos uma nova rota para receber os dados do "novo fornecedor":
-        @see api\rotas\fonecedores\index.js
-3. Adicionamos uma nova função ao módulo de TabelaFornecedor / Fornecedor para "inserir" um Fornecedor no BD:
-        @see api\rotas\fonecedores\TabelaFornecedor.js
-        @see api\rotas\fonecedores\Fornecedor.js
-4. Adicionamos uma nova rota para pegar os dados de um fornecedor em particular a partir do ID:
-        @see api\rotas\fonecedores\index.js
-5. Adicionamos uma nova função ao módulo de TabelaFornecedor / Fornecedor para "pegar" os dados de um 
-   Fornecedor no BD:
-        @see api\rotas\fonecedores\TabelaFornecedor.js
-        @see api\rotas\fonecedores\Fornecedor.js
-6. Adicionamos uma nova rota para atualizar dados de um fornecedor em particular a partir do ID:
-        @see api\rotas\fonecedores\index.js
-7. Adicionamos uma nova função ao módulo de TabelaFornecedor / Fornecedor para "atualizar" os dados de um 
-   Fornecedor no BD:
-        @see api\rotas\fonecedores\TabelaFornecedor.js
-        @see api\rotas\fonecedores\Fornecedor.js
-
-Capítulo 03: Educando sua API
-#sequelizeDestroy, #responseStatus
-
-1. Adicionamos uma nova rota para deletar um fornecedor em particular a partir do ID:
-        @see api\rotas\fonecedores\index.js
-2. Adicionamos uma nova função ao módulo de TabelaFornecedor / Fornecedor para "deletar" os dados de um 
-   Fornecedor no BD:
-        @see api\rotas\fonecedores\TabelaFornecedor.js
-        @see api\rotas\fonecedores\Fornecedor.js
-3. Criamos os status de resposta adequados aos sucessos e aos erros:
-        @see api\rotas\fonecedores\index.js
-
-Capítulo 04: Erros que ajudam
-#paramRequest, #paramResponse, #paramNext, #mainStatusErrorHandler, #middleware
-
-1. Criamos uma classificação de Error "Não Encontrado":
-        @see api\erros\NaoEncontrado.js
-2. Centralizamos todos os erros da api em um "use" em:
-        @see api\index.js
-3. Utilizamos a classe "NaoEncontrado" na central de erros:
-        @see api/index.js
-4. Criamos uma classificação de Error "Campo Inválido":
-        @see api\erros\CampoInvalido.js
-5. Utilizamos a classe "CampoInvalido" na central de erros:
-        @see api/index.js
-6. Criamos uma classificação de Erros "Dados Não Fornecedos":
-        @see api\erros\DadosNaoFornecidos.js
-7. Utilizamos a classe "DadosNaoFornecidos" na central de erros:
-        @see api/index.js
-8. Criamos a classe "Serializador" que irá decidir sobre o formato 
-   de retorno de nossa API:
-        @see api\Serializador.js
-9. Criamos uma classificação de Erros: "Valor Não Suportado":
-        @see api\erros\ValorNaoSuportado.js
-10. Utilizamos a classe "ValorNaoSuportado" na central de erros:
-        @see api/index.js
-
-Capítulo 05: Transformando dados
-#requestHeader, #designPatternTemplateMethod #middleware, #map
-
-1. Criamos uma nova classe "SerializadorFornecedor" usando um designer pattern chamado "Template Method" em:
-        @see api\Serializador.js
-2. Injetamos um novo "Middleware" na app para verificar se o formato requisitado é aceito pela API:
-        @see api\index.js
-3. Modificamos as respostas das rotas para usar a instância de SerializadorFornecedor:
-        @see api\rotas\fonecedores\index.js
-   ...dessa forma, fica mais simples de alterar o formato de resposta, caso seja modificado ou 
-   acrescentado mais um;
-4. Inserimos mais um método no Serializer para filtrar os campos de um objeto que gostariamos de mostrar na 
-   resposta:
-        @see api\Serializador.js
-5. Inserimos mais um método no Serializer para filtrar os campos de um conjunto de objetos que gostariamos de
-   mostrar na resposta:
-        @see api\Serializador.js
-6. Utilizamos o método do Serializer no método serializar() :
-        @see api\Serializador.js
-
-Capítulo 06: API Bilingue
-#xmlFormat, #singular, #plural
-
-1. Criamos uma nova classe SerializadorErro em:
-        @see api\Serializador.js
-   ...utlizando-a no Middleware de tratamento geral de erros da api:
-        @see api\index.js
-2. Instalamos o pacote jsontoxml:
-        >npm install jsontoxml
-3. Adicionamos um novo formato de saída ao serilizador:
-        @see api\Serializador.js
-
-
+6. Criamos o modelo de funções que manipulam os dados de produto em:
+        @see api\rotas\fonecedores\produtos\TabelaProduto.js
+7. Fizemos o "merge" de parametros do roteador pai para o seu roteador filho:
+        @see api\rotas\fonecedores\produtos\index.js
