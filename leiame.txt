@@ -24,3 +24,16 @@ Capítulo 01: Produtos na Pet Shop
         @see api\rotas\fonecedores\produtos\TabelaProduto.js
 7. Fizemos o "merge" de parametros do roteador pai para o seu roteador filho:
         @see api\rotas\fonecedores\produtos\index.js
+
+Capítulo 02: Gerenciado produtos
+#dataValidation, #routerHierarchy, #middleware
+
+1. Criamos uma nova rota tipo post para com a intensão de adicionar um novo produto a base de dados:
+        @see api\rotas\fonecedores\produtos\index.js
+2. Criamos uma nova classe "Produto" para representar as propriedades de um produto:
+        @see api\rotas\fonecedores\produtos\Produto.js 
+   ...com os metodos de criar, apagar e validar;
+3. Criamos um "Middleware", aproveitando o carregamento da fornecedor, que verifica se um fornecedor
+   é válido antes de prosseguir na requsição "filha":
+        @see api\rotas\fonecedores\index.js
+

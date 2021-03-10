@@ -91,7 +91,7 @@ roteador.delete('/:id', async (requisicao, resposta, proxima) => {
         const fornecedor = new Fornecedor({id});
         await fornecedor.carregar();
         await fornecedor.remover();
-        resposta.status(200);
+        resposta.status(204);
         const serializador = new SerializadorFornecedor(resposta.getHeader('Content-Type'));
         resposta.send(serializador.serializar({  
             mensagem: `Fornecedor de id ${id} removido`, 
@@ -103,10 +103,30 @@ roteador.delete('/:id', async (requisicao, resposta, proxima) => {
 });
 
 /**
+ * Middleware: Tenta carregar um fornecedor, caso ache, já injeta
+ * a instancia carregada na requisicao, disponibilizando-a para sua 
+ * "filha"
+ * @param {*} requisicao 
+ * @param {*} resposta 
+ * @param {*} proximo 
+ */
+const verificaFornecedor = async (requisicao, resposta, proximo) => {
+    try {
+        const id = requisicao.params.idFornecedor;
+        const fornecedor = new Fornecedor({id});
+        await fornecedor.carregar();
+        requisicao.fornecedor = fornecedor;
+        proximo();
+    } catch (erro) {
+        proximo(erro);
+    }
+};
+
+/**
  * Middleware: Conjunto de todas as rotas de Produtos 
  * relacionados a um fornecedor em particular
  * @subroute
  */
-roteador.use('/:idFornecedor/produtos', roteadorProdutos);
+roteador.use('/:idFornecedor/produtos', verificaFornecedor, roteadorProdutos);
 
 module.exports = roteador;

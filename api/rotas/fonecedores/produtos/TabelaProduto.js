@@ -1,4 +1,5 @@
 const ModeloTabelaProduto = require('./ModeloTabelaProduto');
+const Produto = require('./Produto');
 
 module.exports = {
     /**
@@ -16,18 +17,16 @@ module.exports = {
     },
     /**
      * Retorna um fornecedor criado no DB
-     * @param idFornecedor int
-     * @param produto Produto
+     * @param dados Produto
      * @returns Produto 
      */
-    inserir(idFornecedor, produto) {
-        const novoProduto = Object.assign({fornecedor:idFornecedor}, produto);
-        return ModeloTabelaProduto.create(novoProduto);
+    inserir(dados) {
+        return ModeloTabelaProduto.create(dados);
     },
     /**
-     * Retorna um fornecedor a partir de seu id
+     * Retorna um produto a partir de seu id
      * @param int id 
-     * @returns Fornecedor
+     * @returns Produto
      */
     async pegarPorId(id) {
         const encontrado = await ModeloTabelaProduto.findOne({
@@ -39,11 +38,11 @@ module.exports = {
         return encontrado;
     },
     /**
-     * Retorna o fornecedor a partir de seu id com 
+     * Retorna o produto a partir de seu id com 
      * os dados atualizados
      * @param int id 
      * @param Object dadosParaAtualizar 
-     * @returns Fornecedor
+     * @returns Produto
      */
     atualizar (id, dadosParaAtualizar) {
         return ModeloTabelaProduto.update(dadosParaAtualizar, {
@@ -51,13 +50,17 @@ module.exports = {
         });
     },
     /**
-     * Retorna o fornecedor com id que foi excluído 
-     * @param int id 
-     * @returns Fornecedor
+     * Retorna o produto com id/fornecedor que foi excluído 
+     * @param int idProduto 
+     * @param int idFornecedor
+     * @returns Produto
      */
-    remover(id) {
+    remover(idProduto, idFornecedor) {
         return ModeloTabelaProduto.destroy({
-            where: {id}
+            where: {
+                id : idProduto, 
+                fornecedor : idFornecedor
+            }
         });
     }
 }
