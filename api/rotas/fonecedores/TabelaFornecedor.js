@@ -28,7 +28,8 @@ module.exports = {
      */
     async pegarPorId(id) {
         const encontrado = await ModeloTabelaFornecedor.findOne({
-            where : {id}
+            where : {id},
+            raw : true
         });
         if(!encontrado) {
             throw new NaoEncontrado(`Fornecedor de id ${id}`);

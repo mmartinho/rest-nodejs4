@@ -114,9 +114,40 @@ class SerializadorFornecedor extends Serializador {
     }
 }
 
+/**
+ * Trata o conteúdo de resposta da classe fornecedor
+ */
+ class SerializadorFornecedorV2 extends SerializadorFornecedor {
+    /**
+     * @param string contentType 
+     */
+    constructor(contentType, camposExtras) {
+        super(contentType, camposExtras);
+        this.camposPublicos = ['id','categoria'].concat(camposExtras || []);
+    }
+}
+
+/**
+ * Trata o conteúdo de resposta da classe fornecedor
+ */
+ class SerializadorProduto extends Serializador {
+    /**
+     * @param string contentType 
+     */
+    constructor(contentType, camposExtras) {
+        super();
+        this.contentType = contentType;
+        this.camposPublicos = ['id', 'titulo'].concat(camposExtras || []);
+        this.tagSingular = 'produto';
+        this.tagPlural = 'produtos';
+    }
+}
+
 module.exports = { 
     Serializador : Serializador,
     SerializadorFornecedor : SerializadorFornecedor,
+    SerializadorFornecedorV2 : SerializadorFornecedorV2,
     SerializadorErro : SerializadorErro,
+    SerializadorProduto : SerializadorProduto,
     formatosAceitos: ['application/json', 'application/xml']
 };

@@ -1,5 +1,6 @@
 const ModeloTabelaProduto = require('./ModeloTabelaProduto');
-const Produto = require('./Produto');
+const NaoEncontrado = require('../../../erros/NaoEncontrado');
+const instancia = require('../../../banco-de-dados');
 
 module.exports = {
     /**
@@ -26,11 +27,13 @@ module.exports = {
     /**
      * Retorna um produto a partir de seu id
      * @param int id 
+     * @param int fornecedor
      * @returns Produto
      */
-    async pegarPorId(id) {
+    async pegarPorId(id, fornecedor) {
         const encontrado = await ModeloTabelaProduto.findOne({
-            where : {id}
+            where : {id, fornecedor},
+            raw : true
         });
         if(!encontrado) {
             throw new NaoEncontrado(`Produto de id ${id}`);
@@ -41,11 +44,11 @@ module.exports = {
      * Retorna o produto a partir de seu id com 
      * os dados atualizados
      * @param int id 
-     * @param Object dadosParaAtualizar 
+     * @param Object dados 
      * @returns Produto
      */
-    atualizar (id, dadosParaAtualizar) {
-        return ModeloTabelaProduto.update(dadosParaAtualizar, {
+    atualizar (id, dados) {
+        return ModeloTabelaProduto.update(dados, {
             where : {id}
         });
     },
@@ -60,7 +63,38 @@ module.exports = {
             where: {
                 id : idProduto, 
                 fornecedor : idFornecedor
-            }
+            },
+            raw: true
         });
-    }
+    },
+    /**
+     * @param {*} idProduto 
+     * @param {*} idFornecedor 
+     * @param {*} campo 
+     * @param {*} quantidade 
+     */
+    subtrair(idProduto, idFornecedor, campo, quantidade) {
+        return instancia.transaction(async transacao => {
+            const produto = await ModeloTabelaProduto.findOne({
+                id : idProduto,
+                fornecedor: idFornecedor
+            });
+            produto[campo]= quantidade;
+            await produto.save();
+            return produto;            
+        });
+    },
+    /**
+     * Lista produtos com determinados critérios
+     * @param {*} idFornecedor 
+     * @param {*} criterios 
+     * @returns 
+     */
+    listar (idFornecedor, criterios = {}) {
+        criterios.fornecedor = idFornecedor;
+        return ModeloTabelaProduto.findAll({
+            where: criterios,
+            raw: true
+        });
+    }     
 }

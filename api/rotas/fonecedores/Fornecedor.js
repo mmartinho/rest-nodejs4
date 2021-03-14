@@ -1,5 +1,7 @@
 const CampoInvalido = require('../../erros/CampoInvalido');
 const DadosNaoFornecidos = require('../../erros/DadosNaoFornecidos');
+const Produto = require('./produtos/Produto');
+const TabelaProduto = require('./produtos/TabelaProduto');
 const TabelaFornecedor = require('./TabelaFornecedor');
 
 /**

@@ -8,5 +8,8 @@
     },
     "api" : {
         "porta": 3000
+    },
+    "aplicacao" : {
+        "nome": "Gatito PET Shop"
     }
 }

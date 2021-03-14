@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
 const roteadorFornecedor = require('./rotas/fonecedores');
+const reoteadorFornecedorV2 = require('./rotas/fonecedores/rotas.vs');
 const NaoEncontrado = require('./erros/NaoEncontrado');
 const CampoInvalido = require('./erros/CampoInvalido');
 const ValorNaoSuportado = require('./erros/ValorNaoSuportado');
@@ -17,6 +18,29 @@ const app = express();
  * Middleware: Injeta o tradutor do formato JSON no app server
  */
 app.use(bodyParser.json());
+
+/**
+ * Middleware: CORS
+ */
+app.use((requisicao, resposta, proximo) => {
+    /** 
+     * Acces-Control-Allow-Origin  
+     */
+     resposta.set('Access-Control-Allow-Origin', '*');
+     proximo();
+});
+
+/**
+ * Middleware: Define o nome da App em todos os cabeçalhos de 
+ * todas as respostas
+ */
+ app.use((requisicao, resposta, proximo) => {
+    /** 
+     * X-Powered-By  
+     */
+    resposta.set('X-Powered-By', config.aplicacao.nome);
+    proximo();
+});
 
 /**
  * Middleware: Antes de acessar qualquer rota, verifica
@@ -45,8 +69,15 @@ app.use((requisicao, resposta, proximo) => {
 
 /**
  * Middleware: Conjunto de todas as rotas de Fornecedores
+ * @version 1
  */
 app.use('/api/fornecedores', roteadorFornecedor);
+
+/**
+ * Middleware: Conjunto de todas as rotas de Fornecedores
+ * @version 2
+ */
+app.use('/api/v2/fornecedores', reoteadorFornecedorV2);
 
 /**
  * Middleware: Conjunto de todos os erros da API

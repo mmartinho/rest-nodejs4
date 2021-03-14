@@ -1,8 +1,19 @@
 const roteador = require('express').Router();
 const TabelaFornecedor = require('./TabelaFornecedor');
 const Fornecedor = require('./Fornecedor');
-const { SerializadorFornecedor } = require('../../Serializador');
+const { SerializadorFornecedor, SerializadorProduto } = require('../../Serializador');
 const roteadorProdutos = require('./produtos');
+const TabelaProduto = require('./produtos/TabelaProduto');
+
+/**
+ * Rota OPTIONS para rotas "sem parametro"
+ */
+roteador.options('/', (requisicao, resposta, proximo) => {
+    resposta.set('Access-Control-Allow-Methods', 'GET,POST');
+    resposta.set('Access-Control-Allow-Headers', 'Content-Type');
+    resposta.status(204);
+    resposta.end();
+});
 
 /**
  * Rota que responde com a lista de fornecedores
@@ -37,6 +48,16 @@ roteador.post('/', async (requsicao, resposta, proxima) => {
     } catch (erro) {
         proxima(erro);
     }
+});
+
+/**
+ * Rota OPTIONS para rotas "com parametros"
+ */
+roteador.options('/:id', (requisicao, resposta) => {
+    resposta.set('Access-Control-Allow-Methods', 'GET,PUT,DELETE');
+    resposta.set('Access-Control-Allow-Headers', 'Content-Type');
+    resposta.status(204);
+    resposta.end();
 });
 
 /**
@@ -100,6 +121,26 @@ roteador.delete('/:id', async (requisicao, resposta, proxima) => {
     } catch (erro) {
         proxima(erro);
     }
+});
+
+/**
+ * Rota que calcula reposicao de estoque de produtos do fornecedor
+ */
+ roteador.post('/:id/calcular-reposicao-de-estoque', async (requisicao, resposta, proximo) => {
+    try {
+        const id = requisicao.params.id;
+        const fornecedor = new Fornecedor({id});
+        await fornecedor.carregar();        
+        const produtos = await TabelaProduto.listar(fornecedor.id, {estoque : 0 });
+        resposta.status(200);
+        const serializador = new SerializadorProduto(
+            resposta.getHeader('Content-Type'),
+            ['estoque']
+        );         
+        resposta.send(serializador.serializar(produtos));
+    } catch (erro) {
+        proximo(erro);
+    }  
 });
 
 /**

@@ -37,3 +37,57 @@ Capítulo 02: Gerenciado produtos
    é válido antes de prosseguir na requsição "filha":
         @see api\rotas\fonecedores\index.js
 
+Capítulo 03: Modulos e hieraquia de dados
+#nonCrudApiRoutes, #databaseTransanction 
+
+1. Criamos a rota, o método da classe Produto e a função do sequelize para carregar um produto:
+        @see api\rotas\fonecedores\produtos\index.js
+        @see api\rotas\fonecedores\produtos\Produto.js
+        @see api\rotas\fonecedores\produtos\TabelaProduto.js
+2. Criamos mais uma classe para serializar produtos:
+        @see api\Serializador.js
+   ...utilizando-a nas nossas rotas, substituindo o "JSON.stringfy":
+        @see api\rotas\fonecedores\produtos\index.js
+3. Criamos a rota, o método da classe Produto e a função do sequelize para atualizar um produto:
+        @see api\rotas\fonecedores\produtos\index.js
+        @see api\rotas\fonecedores\produtos\Produto.js
+        @see api\rotas\fonecedores\produtos\TabelaProduto.js
+4. Criamos a rota, o método da classe Produto e a função do sequelize para excluir um produto:
+        @see api\rotas\fonecedores\produtos\index.js
+        @see api\rotas\fonecedores\produtos\Produto.js
+        @see api\rotas\fonecedores\produtos\TabelaProduto.js
+5. Criamos a rota, o método da classe Produto e função do sequelize para diminuir o estoque de um produto:
+        @see api\rotas\fonecedores\produtos\index.js
+        @see api\rotas\fonecedores\produtos\Produto.js
+        @see api\rotas\fonecedores\produtos\TabelaProduto.js
+6. Criamos, uma rota de Fonecedor para mostrar quais produtos estão com estoque zero:
+        @see api\rotas\fonecedores\index.js
+        @see api\rotas\fonecedores\produtos\TabelaProduto.js
+
+Capítulo 04: Arquétipos e respostas mais complexas
+#httpProtocol, #domain, #documentCollection, #document, #documentsHierarchy, #subdocumentCollection #subdocument
+#controller, #documentAction, #httpVerbs, #httpGet, #httpPost, #httpPut, #httpDelete, #httpHead
+
+1. Modificamos as rotas de Produto para incluir alguns cabeçalhos de respostas:
+        @see api\rotas\fonecedores\produtos\index.js
+2. Adicionamos uma nova rota de Produto para realizar consulta de metadados:
+        @see api\rotas\fonecedores\produtos\index.js
+
+Capítulo 05: CORS, OPTIONS e versões
+#cors, #accessControlAllowOrigin, #accessControlAllowMethods, #accessControlAllowHeader, #routeVersion
+
+1. Adicionamos mais um Middleware na app para permitir que sites diferentes do localhost possam acessar a nossa API.
+   O Middleware "injeta" um cabeçalho de resposta chamado "Access-Control-Allow-Origin":
+        @see api\index.js
+2. Ao definir "Access-Control" para a resposta, precisamos definir rotas do tipo "OPTIONS", pois, já que a resposta do servidor
+   é uma Access-Control, a partir dai, a cada requisição de rota, o cliente questionará quais rotas possuem quais métodos
+   e cabeçalhos permitidos. Sendo assim temos que definir para cada rota CRUD ou Controller com uri diferenciada uma rota OPTIONS
+   que responda com "Methods" e "Headers" permitidos (Access-Control-Allow):
+        @see api\rotas\fonecedores\index.js
+        @see api\rotas\fonecedores\produtos\index.js
+3. Criamos uma nova versão da rota de lista de fonecedores:
+        @see api\rotas\fonecedores\rotas.vs.js
+   ...definindo-a em:
+        @see api\index.js
+   ...criando uma nova classe serializadora em:
+        @see api\Serializador.js
