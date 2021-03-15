@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const config = require('config');
 const roteadorFornecedor = require('./rotas/fonecedores');
 const reoteadorFornecedorV2 = require('./rotas/fonecedores/rotas.vs');
+const roteadorUpload = require('./rotas/files/upload');
 const NaoEncontrado = require('./erros/NaoEncontrado');
 const CampoInvalido = require('./erros/CampoInvalido');
 const ValorNaoSuportado = require('./erros/ValorNaoSuportado');
@@ -47,22 +48,27 @@ app.use((requisicao, resposta, proximo) => {
  * se o formato requisitado é aceito pela API
  */
 app.use((requisicao, resposta, proximo) => {
-    let formatoRequisitado = requisicao.header('Accept');
+    if(requisicao.url !== '/api/files/upload') {
+        let formatoRequisitado = requisicao.header('Accept');
 
-    /**
-     * É formato geral?
-     */
-    if(formatoRequisitado === '*/*') {
-        formatoRequisitado = 'application/json';
-    }
+        /**
+         * É formato geral?
+         */
+        if(formatoRequisitado === '*/*') {
+            formatoRequisitado = 'application/json';
+        }
 
-    /**
-     * Formato requisitado é aceito?
-     */
-    if(formatosAceitos.indexOf(formatoRequisitado) === -1) {
-        resposta.status(406).json(`Formato ${formatoRequisitado} não é aceito`);
+        /**
+         * Formato requisitado é aceito?
+         */
+        if(formatosAceitos.indexOf(formatoRequisitado) === -1) {
+            resposta.status(406).json(`Formato ${formatoRequisitado} não é aceito`);
+        } else {
+            resposta.setHeader('Content-Type', formatoRequisitado);
+            proximo();
+        }
     } else {
-        resposta.setHeader('Content-Type', formatoRequisitado);
+        resposta.setHeader('Content-Type', '*/*');
         proximo();
     }
 });
@@ -78,6 +84,11 @@ app.use('/api/fornecedores', roteadorFornecedor);
  * @version 2
  */
 app.use('/api/v2/fornecedores', reoteadorFornecedorV2);
+
+/**
+ * Middleware: Conjunto de todas as rotas que manipulam arquivo
+ */
+app.use('/api/files', roteadorUpload);
 
 /**
  * Middleware: Conjunto de todos os erros da API

@@ -48,6 +48,9 @@ class Serializador {
         if(this.contentType === 'application/xml') {
             return this.xml(dados);
         }
+        if(this.contentType === '*/*') {
+            return dados;
+        }
         throw new ValorNaoSuportado(this.contentType);
     }
 
@@ -149,5 +152,5 @@ module.exports = {
     SerializadorFornecedorV2 : SerializadorFornecedorV2,
     SerializadorErro : SerializadorErro,
     SerializadorProduto : SerializadorProduto,
-    formatosAceitos: ['application/json', 'application/xml']
+    formatosAceitos: ['application/json', 'application/xml', '*/*']
 };

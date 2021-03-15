@@ -91,3 +91,16 @@ Capítulo 05: CORS, OPTIONS e versões
         @see api\index.js
    ...criando uma nova classe serializadora em:
         @see api\Serializador.js
+
+Anexo 1: Express realizando upload com multer
+
+1. Criamos a rota de upload de arquivo:
+        @see api\rotas\files\upload\index.js
+2. Adicionamos o barrel da rota na app:
+        @see api\index.js
+3. Criamos um formulário estático, em:
+        @see public\index.html
+4. Executamos um web server na pasta pública, e acessando a url do formulário, adicionamos um arquivo, e submetemos O
+   formulário;
+5. Um novo arquivo é enviado para:
+        @see uploads
